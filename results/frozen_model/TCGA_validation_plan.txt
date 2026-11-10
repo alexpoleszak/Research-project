@@ -1,0 +1,21 @@
+PRE-SPECIFIED VALIDATION PLAN (written BEFORE any TCGA outcome data were analysed)
+Date frozen: 2026-11-10 12:41
+
+MODEL: frozen_signature.rds / signature_coefficients.csv (no re-fitting, no re-selection).
+COHORT: TCGA-COAD primary tumours. Exclude rectal (READ) cases, missing OS, OS time <= 0.
+OUTCOME: overall survival (use the curated TCGA-CDR clinical resource).
+SCORING: log2(normalized expression + 1); z-score each gene within the TCGA tumours;
+         score = sum(coefficient x z). Report how many of the signature genes are present;
+         if fewer than 90% are present, STOP and discuss before proceeding.
+
+PRIMARY ANALYSIS: Cox model, hazard ratio per 1 SD of the TCGA score,
+         adjusted for stage (I-II / III / IV), age at diagnosis, sex.
+PRIMARY SUCCESS CRITERION: [CONFIRM WITH ADVISORS BEFORE RUNNING]
+         default = adjusted HR > 1 with the 95% CI excluding 1.
+
+SECONDARY: high vs low by TCGA-cohort median; added value over stage+age+sex
+         (likelihood-ratio test, C-index); MSI/MMR-adjusted model if MSI status is available.
+SENSITIVITY: follow-up capped at 60 months; excluding stage IV.
+
+NOT ALLOWED after seeing TCGA outcomes: changing genes, coefficients, cutoffs, covariates,
+or the success criterion. Any deviation is reported as post-hoc.
